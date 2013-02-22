@@ -1,0 +1,25 @@
+if(typeof Pour == 'undefined'){
+	var Pour = {};
+}
+/*JSON_CONFIGURATION_HERE*/
+Pour.Conf = {
+	"prefix":"pour",
+	"iconLocation":"top-right", 
+//	  "top-left", "top-right", "bottom-left", "bottom-right"
+	"userAuth":"Postgres"
+//	  "Postgres", "Text"
+	"userAuthPostgres":{
+		"host":"localhost",
+		"user":"postgres",
+		"password":"",
+		"database":"postgress",
+		"table":"users",
+		"field_id":"email",
+		"field_password":"password",
+		"password_type":"MD5",
+//		  "MD5" or "plain"
+	},
+	"userAuthText":{
+		"path":"/pass/to/the/safty/password/file"
+	}
+}

@@ -1,0 +1,29 @@
+############
+## JanTac
+############
+
+# Temp directory for build
+build
+
+# Temp directory for node-modules install
+node_modules
+
+# Directory for PSD or AI files
+source
+
+#Workspace file of sublime2
+*.sublime-workspace
+*.sublime-project
+
+
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
