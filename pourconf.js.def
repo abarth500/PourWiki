@@ -6,7 +6,7 @@ Pour.Conf = {
 	"prefix":"pour",
 	"iconLocation":"top-right", 
 //	  "top-left", "top-right", "bottom-left", "bottom-right"
-	"userAuth":"Postgres"
+	"userAuth":"Postgres",
 //	  "Postgres", "Text"
 	"userAuthPostgres":{
 		"host":"localhost",

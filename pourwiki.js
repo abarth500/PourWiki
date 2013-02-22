@@ -7,7 +7,7 @@ Pour.Wiki = function(){
 	var left = (conf["iconLocation"].indexOf("left")+4==conf["iconLocation"].length)?"0px":"100%";
 	this.setting = $("<img/>")
 		.attr("id",this.prefix+"-x-Setting")
-		.attr("src":conf["baseDir"]+"imgs/gear.png")
+		.attr("src",conf["baseDir"]+"imgs/gear.png")
 		.css("position","absolute")
 		.css("top",top)
 		.css("left",left);
