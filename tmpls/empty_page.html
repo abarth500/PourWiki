@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>Empty Template Page</title>
+	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<!-- purl.js: https://github.com/allmarkedup/jQuery-URL-Parser -->
+	<script type="text/javascript" src="/PourWiki/purl.js"></script>
+	<script type="text/javascript" src="/PourWiki/pourconf.js"></script>
+	<script type="text/javascript" src="/PourWiki/pourwiki.js"></script>
+	<script>
+		$(function(){
+			$(window).load(function(){
+				var wiki = new Pour.Wiki(function(){
+					$("veil").fadeOut(500);
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+<div id="pour-G-getDate"></div>
+<div id="contents"></contents>
+<div>
+	<span id="pour-g-credit"></span>
+</div>
+<div id="veil" style="position:absolute;top:0px;left:0px;width:100%;height:100%;background-color:#000;"></div>
+</body>
+</html>

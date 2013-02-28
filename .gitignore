@@ -1,12 +1,6 @@
 ############
-## JanTac
+## PourWiki
 ############
-
-# Temp directory for build
-build
-
-# Temp directory for node-modules install
-node_modules
 
 # Directory for PSD or AI files
 source
@@ -15,6 +9,15 @@ source
 *.sublime-workspace
 *.sublime-project
 
+#My setting
+pourconf.js
+pourconf.php
+
+#My pourable
+docs/global/tod*.*
+
+#My Template
+tmpls/tod*.*
 
 
 ############

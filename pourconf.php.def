@@ -1,0 +1,25 @@
+<?php
+//Hidden configuration
+//    see also public configuration pourconf.js
+$conf = array(
+	"userAuth"=>"Postgres",
+//	            "Postgres", "Text"
+	"passwordType"=>"MD5",
+//	                 "MD5" or "plain"
+	"userAuthPostgres"=>array(
+		"host"=>"localhost",
+		"port"=>"5432",
+		"user"=>"postgres",
+		"password"=>"",
+		"database"=>"postgres",
+		"table"=>"users",
+		"field_id"=>"mail",
+		"field_password"=>"password",
+		"field_name"=>"name",
+		"sql_where"=>"",
+	),
+	"userAuthText"=>array(
+		"path"=>"/pass/to/the/safty/password/file"
+	)
+);
+?>
