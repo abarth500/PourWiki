@@ -1,12 +1,23 @@
-<html>
+<!DOCTYPE HTML>
+<html xml:lang="ja" lang="ja">
 <head>
+	<meta charset="utf-8" />
 	<title>Empty Template Page</title>
-	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<!-- JQuery and Bootstrap -->
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
 	<!-- purl.js: https://github.com/allmarkedup/jQuery-URL-Parser -->
 	<script type="text/javascript" src="/PourWiki/purl.js"></script>
+
+	<!-- Your Configuration File For PourWiki -->
 	<script type="text/javascript" src="/PourWiki/pourconf.js"></script>
+	
+	<!-- PourWiki Engine: https://github.com/abarth500/PourWiki -->
 	<script type="text/javascript" src="/PourWiki/pourwiki.js"></script>
+
 	<script>
 		$(function(){
 			$(window).load(function(){
@@ -19,7 +30,8 @@
 </head>
 <body>
 <div id="pour-G-getDate"></div>
-<div id="contents"></contents>
+<ol class="breadcrumb"></ol>
+<div id="contents"><!-- PourWiki Main Contents --></contents>
 <div>
 	<span id="pour-g-credit"></span>
 </div>

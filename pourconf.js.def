@@ -7,14 +7,14 @@ Pour.Conf =
 {
 	"prefix":"pour",
 	"baseDir":"/PourWiki/",
+	"iconColor":"#999999",
 	"iconLocation":"top-right", 
 //	              ("top-left", "top-right", "bottom-left", "bottom-right")
-	"userAuth":"Postgres",
-//	          ("Postgres", "Text")
 	"mainCnotentsId":"contents",
 //	                 Set ID of DIV tag conteins main contents
 	"indexFileName":"index",
-	"indexExpression":["html","php"]
+	"indexExpression":["html","php"],
+	"preview":false
 }
 /*JSON_CONFIGURATION_END*/
 $(function(){

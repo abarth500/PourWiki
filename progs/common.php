@@ -1,4 +1,11 @@
 <?php
+/*
+ *  PourWiki [https://github.com/abarth500/PourWiki]
+ *  Copyright (c) 2013 Shohei Yokoyama
+ *
+ *  This software is released under the MIT License.
+ *  http://opensource.org/licenses/mit-license.php
+ */
 mb_language("ja");
 mb_internal_encoding("UTF8");
 mb_http_output("UTF8");
@@ -8,11 +15,14 @@ function printHeader($title){
 <html xml:lang="ja" lang="ja">
 <head>
 <meta charset="utf-8" />
-<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<title>Edit - PourWiki</title>
+	<!-- JQuery and Bootstrap -->
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+	<title>Edit - PourWiki</title>
 </head>
-<body>
+<body style="padding-left:10px;padding-right:10px;">
 <?php
 }
 function printFooter(){
@@ -33,12 +43,6 @@ function getContainers($containerStr){
 		)
 	
 	);
-	foreach($conf["myContainer"] as $id => $name){
-		$container[$name] = array(
-			"dynamic"=>array(),
-			"static"=>array()
-		);
-	}
 	foreach($lowContainers as $lowContainer){
 		list($prefix,$id,$name)=explode("-",$lowContainer,3);
 		if($id == "p"){
@@ -49,14 +53,6 @@ function getContainers($containerStr){
 			array_push($container["global"]["static"],$name);
 		}elseif($id == "G"){
 			array_push($container["global"]["dynamic"],$name);
-		}else{
-			if(isset($conf["myContainer"][strtolower($id)])){
-				if(strtolower($id) == $id){
-					array_push($container[$conf["myContainer"][strtolower($id)]]["dynamic"],$name);
-				}else{
-					array_push($container[$conf["myContainer"][strtolower($id)]]["dynamic"],$name);
-				}
-			}
 		}
 	}
 	return $container;
@@ -104,10 +100,11 @@ function auth($user,$password){
 				$l = explode($conf["userAuthText"]["delimiter"],$line);
 				$u = $l[$conf["userAuthText"]["index_id"]];
 				$p = $l[$conf["userAuthText"]["index_password"]];
+				$n = $l[$conf["userAuthText"]["index_name"]];
 				if($u == $user){
 					if($md5){
 						if (md5($password) == $p){
-							return array("status"=>true);
+							return array("status"=>true,"id"=>$u,"name"=>$n);
 						}else{
 							return array("status"=>false,"code"=>1);
 						}
@@ -154,14 +151,14 @@ $confPub = json_decode($confPub,true);
 $conf = array_merge($conf,$confPub);
 $USER = null;
 if (!isset($_SERVER['PHP_AUTH_USER'])) {
-	header("WWW-Authenticate: Basic realm=\"PourWiki\"");
+	header("WWW-Authenticate: Basic realm=\"PourWiki Admin\"");
 	header("HTTP/1.0 401 Unauthorized");
 	die("Only PourWiki users can login.\n");
     exit;
 } else {
 	$USER = auth($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']);
 	if(!$USER["status"]){
-		header("WWW-Authenticate: Basic realm=\"PourWiki\"");
+		header("WWW-Authenticate: Basic realm=\"PourWiki Admin".$conf["userAuth"]."\"");
 		header("HTTP/1.0 401 Unauthorized");
 	    die ("Wrong ID or Password (".$USER["code"].")");
 	    exit;

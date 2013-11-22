@@ -1,4 +1,11 @@
 <?php
+/*
+ *  PourWiki [https://github.com/abarth500/PourWiki]
+ *  Copyright (c) 2013 Shohei Yokoyama
+ *
+ *  This software is released under the MIT License.
+ *  http://opensource.org/licenses/mit-license.php
+ */
 require_once("common.php");
 if(isset($_REQUEST["action"])){
 	$error=array();
@@ -35,24 +42,25 @@ if(isset($_REQUEST["action"])){
 		header("Location: ".$_REQUEST["target"]."?preview=".$id);
 		exit;
 	}
-}else if(isset($_REQUEST["p"])){
-	if(ctype_alnum($_REQUEST["p"])){
-		echo file_get_contents("preview/".$_REQUEST["p"]);
-		unlink("preview/".$_REQUEST["p"]);
+}else if(isset($_REQUEST["preview"])){
+	header("Content-Type: application/json; charset=utf-8");
+	if(ctype_alnum($_REQUEST["preview"])){
+		echo file_get_contents("preview/".$_REQUEST["preview"]);
+		//unlink("preview/".$_REQUEST["preview"]);
 		if ($dh = opendir("preview")) {
 			while (($file = readdir($dh)) !== false) {
 				//delete abandoned preview file
-				if(time()-filectime("preview/".$file)>30){
+				if(is_file("preview/".$file) and time()-filectime("preview/".$file)>30){
 					unlink("preview/".$file);
 				}
 			}
 			closedir($dh);
 		}
 	}else{
-		echo "Preview";
+		echo "Wrong Preview ID";
 	}
 	exit;
 }else{
-	echo "Preview";
+	echo "Wrong Preview Command";
 }
 ?>

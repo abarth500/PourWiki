@@ -1,3 +1,10 @@
+/*
+ *  PourWiki [https://github.com/abarth500/PourWiki]
+ *  Copyright (c) 2013 Shohei Yokoyama
+ *
+ *  This software is released under the MIT License.
+ *  http://opensource.org/licenses/mit-license.php
+ */
 if(typeof Pour == 'undefined'){
 	var Pour = {};
 }
@@ -7,15 +14,28 @@ Pour.Wiki = function(){
 		this.done = arguments[0];
 	}
 	this.init = function(){
-		this.setting = $("<img/>")
+		this.setting = $("<span/>")
 			.attr("id",this._("prefix")+"xXxSetting")
 			.css("position","absolute")
-			.css("opacity","0")
-			.css("cursor","pointer");
+			.css("cursor","pointer")
+			.css("padding","8px")
+			.css("color",this._("iconColor"));
 		if(this._("preview") != false){
-			this.setting.attr("src",this._("baseDir")+"imgs/close.png");
+			this.setting.attr("class","glyphicon glyphicon-remove");
 		}else{
-			this.setting.attr("src",this._("baseDir")+"imgs/gear.png");
+			this.setting.attr("class","glyphicon glyphicon-screenshot");
+		}
+		var top = (this._("iconLocation").indexOf("top")==0)?"0px":"100%";
+		var left = (this._("iconLocation").indexOf("left")+4==this._("iconLocation").length)?"0px":"100%";
+		if(this._("iconLocation").indexOf("right")+5==this._("iconLocation").length){
+			this.setting.css("top",top)
+				.css("left",left)
+				.css("margin-left","-30px");
+		}
+		if(this._("iconLocation").indexOf("bottom")==0){
+			this.setting.css("top",top)
+				.css("left",left)
+				.css("margin-top","-30px");
 		}
 		$("body").append(this.setting);
 		$(this.setting).on("click",$.proxy(function(event){
@@ -29,30 +49,14 @@ Pour.Wiki = function(){
 					target.each($.proxy(function(c){
 
 						var t = $(target.get(c));
-						if(typeof t.attr("id") != "undefined" && t.attr("id").indexOf(this._("prefix")) == 0){
+						if(typeof t.attr("id") != "undefined" && t.attr("id").indexOf(this._("prefix")+"-") == 0){
 							container.push(t.attr("id"));
-						}else if(typeof t.attr("class") != "undefined" && t.attr("class").indexOf(this._("prefix")) == 0){
+						}else if(typeof t.attr("class") != "undefined" && t.attr("class").indexOf(this._("prefix")+"-") == 0){
 							container.push(target.get(c).attr("class"));
 						}
 					},this));
 					window.location = this._("baseDir")+"progs/edit.php?c="+container.join(",");
 				}
-			}
-		},this));
-		$(this.setting).on("load",$.proxy(function(){
-			var top = (this._("iconLocation").indexOf("top")==0)?"0px":"100%";
-			var left = (this._("iconLocation").indexOf("left")+4==this._("iconLocation").length)?"0px":"100%";
-			if(this._("iconLocation").indexOf("right")+5==this._("iconLocation").length){
-				this.setting.css("top",top)
-					.css("left",left)
-					.css("margin-left",(-1*this.setting.width())+"px")
-					.animate({opacity:'1'},500,'linear');
-			}
-			if(this._("iconLocation").indexOf("bottom")==0){
-				this.setting.css("top",top)
-					.css("left",left)
-					.css("margin-top",-1*this.setting.height()+"px")
-					.animate({opacity:'1'},500,'linear');
 			}
 		},this));
 		this.pour();
@@ -67,8 +71,13 @@ Pour.Wiki = function(){
 	}
 	this.pour = function(key){
 		var prefix = this._("prefix");
+		this.indexPage = false;
+		this.pageTitle = "Here!";
 		var pagePourable = [];
 		var dirPourable = [];
+		this.contents = "File Not Found!";
+		this.directories = {};
+		this.globalConstant = {};
 		this.globalStaticPourable = [];
 		this.globalDynamicPourable = [];
 		this.getContainer().each($.proxy(function(c) {
@@ -106,12 +115,24 @@ Pour.Wiki = function(){
 		var page = this._("baseDir") + "docs/local" + $.url(window.href).attr('path');
 		if(page.lastIndexOf("/") == page.length-1){
 			page += this._("indexFileName") + ".txt";
+			this.indexPage = true;
 		}else{
 			page = page.replace(new RegExp("\.[a-zA-Z]{2,4}$"), '.txt');
 		}
-		var dir = this._("baseDir")+ "docs/local" + $.url(window.href).attr('directory') + ".txt";
+		var dir = $.url(window.href).attr('directory').split('/');
+		var dirs = [];
+		var d = "";
+		while(dir.length>0){
+			if(dir.length == 1 && dir[0] == ""){
+				break;
+			}
+			d += dir.shift() + "/";
+			dirs.push( this._("baseDir")+ "docs/local" + d + ".txt");
+		}
+		var constant = this._("baseDir")+ "docs/constant.json";
 		this.donePage = false;
-		this.doneDir = false;
+		this.doneDir = dirs.length;
+		this.doneConstant = false;
 		//page
 		if(this._("preview") != false){
 			page = this._("preview");
@@ -124,10 +145,10 @@ Pour.Wiki = function(){
 			success:$.proxy(function(pagePourable,json){
 				if(typeof json["title"] != "undefined" && json["title"] != ""){
 					document.title = json["title"] + " - " + document.title;
-					$("#contents").html(json["contents"]);
+					this.pageTitle = json["title"];
 				}
 				if(typeof json["contents"] != "undefined" && json["contents"] != ""){
-					$("#contents").html(json["contents"]);
+					this.contents = json["contents"];
 				}
 				if(typeof json["pourables"] != "undefined" && json["pourables"] != ""){
 					var pourables = json["pourables"];
@@ -137,11 +158,18 @@ Pour.Wiki = function(){
 						}
 					}
 				}
+				if(typeof json["hidden"] != "undefined" && json["hidden"] != ""){
+					var hidden = json["hidden"];
+					for(var c in hidden){
+						$("#"+hidden[c]).hide();
+					}
+				}
 				this.donePage = true;
 				this.checkDone();
 			},this,pagePourable),
 			error:$.proxy(function(reuqest,textStatus, errorThrown){
 				this.donePage = true;
+				this.contents = "There is currently no text in this page. You can edit this page.";
 				console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the page file");
 				if(this._("preview") != false){
 					alert(":::PourWiki Critical ERROR!:::\n\nDatasource file for the preview has been deleted. Please close this window and click the preview button on the edit page again.");
@@ -150,18 +178,39 @@ Pour.Wiki = function(){
 			},this)
 		});
 		//direcotory
+		for(var c = 0; c < dirs.length; c++){
+			$.ajax({
+				type: "GET",
+		  		url: dirs[c],
+				dataType: "json",
+				cache:false,
+				success:$.proxy(function(c,json){
+					this.directories[c] = json;
+					this.doneDir--;
+					this.checkDone();
+				},this,c),
+				error:$.proxy(function(c,reuqest,textStatus, errorThrown){
+					this.directories[c] = {"title":"Unknown"};
+					this.doneDir--;
+					console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the direcotry file");
+					this.checkDone();
+				},this,c)
+			});
+		}
+		//constant
 		$.ajax({
 			type: "GET",
-	  		url: dir,
+	  		url: constant,
 			dataType: "json",
 			cache:false,
 			success:$.proxy(function(json){
-				this.doneDir = true;
+				this.globalConstant = json;
+				this.doneConstant = true;
 				this.checkDone();
 			},this),
-			error:$.proxy(function(json){
-				this.doneDir = true;
-				console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the direcotry file");
+			error:$.proxy(function(reuqest,textStatus, errorThrown){
+				this.doneConstant = true;
+				console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the constant file");
 				this.checkDone();
 			},this)
 		});
@@ -175,7 +224,6 @@ Pour.Wiki = function(){
 				dataType: "text",
 				cache:false,
 				success:$.proxy(function(key,data){
-					console.info($("#"+this._("prefix")+"-g-"+key).size());
 					$("#"+this._("prefix")+"-g-"+key+",."+this._("prefix")+"-g-"+key).html(data);
 					this.doneGStatic++;
 					this.checkDone();
@@ -209,12 +257,107 @@ Pour.Wiki = function(){
 			});
 		}
 	}
+	this.rendering = function(){
+		//breadcrumb
+		var depth = Object.keys(this.directories).length;
+		var path = ["."];
+		for(var c = 0; c < depth-1; c++){
+			path.push("..")
+		}
+		for(var c = 0; c < depth; c++){
+			if(c == depth - 1 && this.indexPage){
+				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
+			}else{
+				$(".breadcrumb").append($("<li/>").html('<a href="'+path.join("/")+'/">'+this.directories[c]["title"]+'</a>'));
+				if(c == depth - 1){
+					$(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
+				}
+			}
+			path.pop();
+		};
+		//page
+		this.contents = "<h1>" + this.pageTitle + "</h1><p>" + this.contents;
+		var contents = this.contents;
+		var constant = contents.match(/\{\{[^\}]*\}\}/g);
+		if(constant != null){
+			for(var c = 0;c < constant.length; c++){
+				var key = constant[c].toString().slice(2,-2);
+				var mode = key.split(":");
+				var replace = "";
+				switch(mode[0]){
+					case "url":
+						replace = '<a href="'+this.globalConstant[key]+'">'+mode[1]+'</a>';
+						break;
+					case "mail":
+						replace = '<a href="mailto:'+this.globalConstant[key]+'">'+mode[1]+'</a>';
+						break;
+					default:
+						replace = this.globalConstant[key]
+				}
+				contents = contents.replace(constant[c].toString(),replace);
+			}
+		}
+		var link = contents.match(/\[\[[^\]]*\]\]/g);
+		if(link != null){
+			for(var c = 0;c < link.length; c++){
+				var target = link[c].toString().slice(2,-2);
+				var text = target.split(" ");
+				target = text.shift();
+				if(text.length > 0){
+					text = text.join(" ");
+				}else{
+					text = target;
+				}
+				contents = contents.replace(link[c].toString(),'<a href="'+target+'">'+text+"</a>");
+			}
+		}
+		var bold = contents.match(/\'\'\'[^\']*\'\'\'/g);
+		if(bold != null){
+			for(var c = 0;c < bold.length; c++){
+				var target = bold[c].toString().slice(3,-3);
+				contents = contents.replace(bold[c].toString(),"<strong>"+target+"</strong>");
+			}
+		}
+		var italic = contents.match(/\'\'[^\']*\'\'/g);
+		if(italic != null){
+			for(var c = 0;c < italic.length; c++){
+				var target = italic[c].toString().slice(2,-2);
+				contents = contents.replace(italic[c].toString(),"<em>"+target+"</em>");
+			}
+		}
+		var headding = contents.match(/\={2,6}[^\=]*\={2,6}/g);
+		if(headding != null){
+			for(var c = 0;c < headding.length; c++){
+				var n = headding[c].toString().match(/^\=+[^\=]/)[0].toString().length - 1;
+				var target = headding[c].toString().slice(n,-n);
+				contents = contents.replace(headding[c].toString(),"<h"+(n)+">"+target+"</h"+(n)+">");
+			}
+		}
+		var lines  = contents.split("\n");
+		contents = "";
+		var render = new Pour.Render();
+		for(var c = 0; c < lines.length; c++){
+			if($.inArray(lines[c].charAt(0),["*","#",";"," ","@"]) != -1){
+				render.append(lines[c]);
+			}else if(lines[c] == "" || lines[c] == "\r"){
+				contents += render.pack();
+				contents += "<br>";
+			}else{
+				contents += render.pack();
+				contents += lines[c];
+			}
+		}
+		contents += render.pack();
+		$("#contents").html(contents);
+	}
 	this.checkDone = function(){
 		if(this.donePage 
-			&& this.doneDir 
+			&& this.doneDir == 0
+		    && this.doneConstant
 			&& this.globalStaticPourable.length == this.doneGStatic 
 			&& this.globalDynamicPourable.length == this.doneGDynamic)
 		{
+			this.rendering();
 			this.done();
 			return true;
 		}else{
@@ -225,4 +368,118 @@ Pour.Wiki = function(){
 		return $("div[id^='"+this._("prefix")+"'],span[id^='"+this._("prefix")+"'],div[class^='"+this._("prefix")+"'],span[class^='"+this._("prefix")+"']")
 	}
 	this.init(arguments);
+}
+
+Pour.Render = function(){
+	this.list = [];
+	this.context = [];
+	this.append = function(item){
+		var c = item.match(/^[\*\#\; \@]+/);
+		if(c!= null){
+			c = c[0].toString();
+			var text = item.slice(c.length);
+			var lastContext = this.ajustContext(c);
+			switch(lastContext){
+				case "@":
+					if(text.charAt(0)=="-"){
+						text = "<tr><th>" + text.slice(1)
+						                        .replace(/^\s+|\s+$/g, "")
+						                        .replace(/( *\t+ *| {4,})/g,"\t")
+						                        .split("\t").join('</th><th>') + "</th></tr>";
+					}else{
+						text = "<tr><td>" + text.replace(/^\s+|\s+$/g, "")
+											    .replace(/( *\t+ *| {4,})/g,"\t")
+						                        .split("\t").join('</td><td>') + "</td></tr>";
+					}
+					break;
+				case " ":
+					break;
+				case "*":
+					text = "<li>"+text+"</li>";
+					break;
+				case "#":
+					text = "<li>"+text+"</li>";
+					break;
+				case ";":
+					text = text.split(":");
+					if(text.length>1){
+						text = "<dt>"+text[0]+"</dt><dd>"+text[1]+"</dd>";
+					}else{
+						text = "<dd>"+text[0]+"</dd>";
+					}
+					break;
+			}
+			this.list.push(text);
+		}
+	}
+	this.ajustContext = function(context){
+		var c=0;
+		for(; c < this.context.length; c++){
+			if(c > context.length){
+				this.close(this.context.length - context.length);
+				break;
+			}
+			if(this.context[c] != context.charAt(c)){
+				this.close(this.context.length - c);
+				break;
+			}
+		}
+		if(c <= context.length){
+			this.open(context.slice(c));
+		}
+		return context.charAt(context.length-1);
+	}
+	this.open = function(context){
+		for(var c = 0; c < context.length; c++){
+			switch(context.charAt(c)){
+				case "@":
+					this.list.push('<table class="table table table-condensed table-bordered table-striped">');
+					break;
+				case " ":
+					this.list.push("<pre>");
+					break;
+				case "*":
+					this.list.push("<ul>");
+					break;
+				case "#":
+					this.list.push("<ol>");
+					break;
+				case ";":
+					this.list.push('<dl class="dl-horizontal">');
+					break;
+			}
+			this.context.push(context.charAt(c));
+		}
+	}
+	this.close = function(n){
+		for(var c = 0; c < n; c++){
+			switch(this.context.pop()){
+				case "@":
+					this.list.push("</table>");
+					break;
+				case " ":
+					this.list.push("</pre>");
+					break;
+				case "*":
+					this.list.push("</ul>");
+					break;
+				case "#":
+					this.list.push("</ol>");
+					break;
+				case ";":
+					this.list.push("</dl>");
+					break;
+			}
+		}
+	}
+	this.pack = function(){
+		if(this.list.length > 0){
+			this.close(this.context.length);
+			var rtn = this.list.join("\n");
+			this.list = [];
+			return rtn;
+		}else{
+			return "";
+		}
+	}
 }
