@@ -72,6 +72,7 @@ mod_rewriteの設定例
 ```
 Order allow,deny
 Allow from all
+Options FollowSymLinks
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -86,7 +87,7 @@ mv PourWiki/.htaccess-root ./.htaccess
 PourWikiディレクトリ自体にはmod_writedを適用しないので、PourWikiディレクトリでは次の.htaccessファイルを設置してください。(普通にインストールしていれば、この.htaccessはすでPourWikiディレクトリに配置されているはずです)
 ```
 RewriteEngine Off
-Options -Indexes
+Options -Indexes　-FollowSymLinks
 <Files ~ "\.password$">
     deny from all
 </Files>
