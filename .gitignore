@@ -12,12 +12,12 @@ source
 #My setting
 pourconf.js
 pourconf.php
-
-#My pourable
+pourable
 docs/global/tod*.*
-
-#My Template
 tmpls/tod*.*
+src/*
+
+
 
 
 ############
