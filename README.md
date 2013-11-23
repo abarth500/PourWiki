@@ -63,16 +63,18 @@ Gitが無い環境ならGithubの画面上にある**Download ZIP**ボタンか�
 次に**pourconf.js.def**を**pourconf.js**に、**pourconf.php.def**を**pourconf.php**に名前を変えてください。これで設置は完了です。
 
 ###mod_rewriteの設定
-Webページのルートに対してmod_rewriteの設定を追加してください。この設定により、存在しないHTMLファイルにアクセスされた場合、代わりにテンプレートファイルがブラウザに表示されます。もし貴方のWebサイトが全て同じデザインで良い場合は、このテンプレートファイルにデザインを施すだけで十分です。カスタムデザインのページ(例えばTOPページだけはデザインを変えよう等の利用法があります)を置きたい場合は、その場所(例えばルートのindex.html)にカスタムデザインのHTMLファイルを置くだけです。このデザインの柔軟さはPourWikiの特徴です。
+Webページのルートに対してmod_rewriteの設定を追加してください。この設定はユーザのアクセスしたURLにファイルが無かった場合、代わりにテンプレートディレクトリ(PourWiki/tmpls)のempty_page.htmlを表示せよという設定です。
 
-mod_rewriteの設定例(.htaccess-rootと同等の内容です)
+もし貴方のWebサイトが全て同じデザインで良い場合は、このテンプレートファイルにデザインを施すだけで十分ですが、特定のページだけデザインを変える事も可能です。独自デザインのページ(例えばTOPページだけはデザインを変えよう等の利用法があります)を置きたい場合は、その場所(例えばルートのindex.html)にカスタムデザインのHTMLファイルを置くだけです。このデザインの柔軟さはPourWikiの特徴です。
+
+mod_rewriteの設定例
 ```
-    Order allow,deny
-    Allow from all
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.+)$ /PourWiki/tmpls/empty_page.html [L,QSA]
+Order allow,deny
+Allow from all
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ /PourWiki/tmpls/empty_page.html [L,QSA]
 ```
 
 この設定はPourWikiディレクトリの.htaccess-rootにも記載されています。ご使用のWebサーバで.htaccess有効なら、これを以下のコマンドで１つ上のディレクトリ(=Webのルートディレクトリ)に移動させれば設定完了です。
@@ -99,7 +101,7 @@ chmod 777 PourWiki/docs/local
 ```
 
 ###index.htmlの設置
-PourWikiでは全てのページにHTMLファイルを設置する必要はありませんが、１つだけ例外があってWebのルートにだけはindex.html(index.phpでも可)を置く必要があります。もし空のWebサイトにPourWikiをインストールした場合は、templsディレクトリにあるempty-page.htmlをコピーしましょう。
+PourWikiでは全てのページにHTMLファイルを設置する必要はありませんが、１つだけ例外があってWebのルートにだけはindex.html(index.phpでも可)を置く必要があります。もし空のWebサイトにPourWikiをインストールした場合は、tmplsディレクトリにあるempty-page.htmlをコピーしましょう。
 ```
 cp PourWiki/tmpls/empty_page.html ./index.html
 ```
@@ -116,7 +118,7 @@ cp PourWiki/tmpls/empty_page.html ./index.html
 ページのデザイン
 -----------
 ###概要
-最初のデザインをするにあたってtemplsディレクトリにあるempty_page.htmlというファイルが参考になるでしょう。このREADME通りにインストールしていれば、そのファイルがブラウザにも表示されているはずです。
+最初のデザインをするにあたってtmplsディレクトリにあるempty_page.htmlというファイルが参考になるでしょう。このREADME通りにインストールしていれば、そのファイルがブラウザにも表示されているはずです。
 
 ###メインコンテンツ
 contentsというid名のdivタグがメインコンテンツの表示エリアになります。
