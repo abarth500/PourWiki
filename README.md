@@ -47,6 +47,7 @@ mv PourWiki/pourconf.js.def PourWiki/pourconf.js
 mv PourWiki/pourconf.php.def PourWiki/pourconf.php
 mv PourWiki/.htaccess-root ./.htaccess
 chmod 777 PourWiki/docs/local
+chmod 777 PourWiki/progs/preview
 cp PourWiki/tmpls/empty_page.html ./index.html
 
 ```
@@ -97,7 +98,13 @@ Options -Indexes
 chown apache:apache PourWiki/docs/local
 #もしくは
 chmod 777 PourWiki/docs/local
+```
 
+次に編集画面でのプレビュー機能ように一時データが書きだされるディレクトリのパーミッションも変更します。
+```
+chown apache:apache PourWiki/progs/preview
+#もしくは
+chmod 777 PourWiki/progs/preview
 ```
 
 ###index.htmlの設置
