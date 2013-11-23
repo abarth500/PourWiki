@@ -32,27 +32,10 @@ $containerIDs = explode(",",$_REQUEST["c"]);
 //Check Source file
 if(substr( $targetPath, strlen( $targetPath) - strlen( "/" ) ) === "/"){
 	$source .= $conf["indexFileName"].".txt";
-	/*
-	$targetPath .= $conf["indexFileName"];
-	$exp = $conf["indexExpression"];
-	$exist = false;
-	foreach($exp as $e){
-		if(file_exists($targetPath.".".$e)){
-			$targetPath .= ".".$e;
-			$exist = true;
-		}
-	}
-	if(!$exist){
-		array_push($error,"Target HTML file is missing! Where is <b>".$target."</b>?");
-	}
-	*/
+}elseif(preg_match("/\.[a-zA-Z0-9]+$/",$source)){
+	$source = preg_replace("/\.[a-zA-Z0-9]+$/",'.txt',$source);
 }else{
-	$source = preg_replace("/\.[a-zA-Z]{2,4}$/",'.txt',$source);
-	/*
-	if(!file_exists($targetPath)){
-		array_push($error,"Target HTML file is missing! Where is <b>".$target."</b>?");
-	}
-	*/
+	$source .= "/"+$conf["indexFileName"].".txt";
 }
 
 //Check and load pourables
