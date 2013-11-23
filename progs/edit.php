@@ -219,7 +219,7 @@ foreach ($containerIDs as $id){
 	echo '<div class="checkbox"><label><input type="checkbox" name="hidden[]" value="'.$id.'"'.((array_search($id,$vHidden)===false)?"":" checked").'>'.$id."</label></div>";
 }
 				?>
-			</]div>
+			</div>
 		</div>
 		
 		<div class="form-group">

@@ -22,11 +22,12 @@ function printHeader($title){
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 	<title>Edit - PourWiki</title>
 </head>
-<body style="padding-left:10px;padding-right:10px;">
+<body style="">
+<div class="col-md-12">
 <?php
 }
 function printFooter(){
-?></body>
+?></div></body>
 </html>
 <?php
 }
