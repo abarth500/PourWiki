@@ -18,7 +18,7 @@ $conf = array(
 	),
 	"userAuthText"=>array(
 		"path"=>"./.password",        //Path to the password file
-		"delimiter"=>":",　            //Delimter of fields
+		"delimiter"=>":",             //Delimter of fields
 		"index_id"=>0,                //Number of feld position for id(username)
 		"index_password"=>1,          //Number of feld position for password
 		"index_name"=>0               ////Number of feld position for realname

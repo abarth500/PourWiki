@@ -113,8 +113,11 @@ Pour.Wiki = function(){
 			}			
 		},this));
 		var page = this._("baseDir") + "docs/local" + $.url(window.href).attr('path');
-		if(page.lastIndexOf("/") == page.length-1){
+		if(page.lastIndexOf("/") == page.length-1 ){
 			page += this._("indexFileName") + ".txt";
+			this.indexPage = true;
+		}else if(page.split("/").pop().indexOf(".")==-1){
+			page += "/" + this._("indexFileName") + ".txt";
 			this.indexPage = true;
 		}else{
 			page = page.replace(new RegExp("\.[a-zA-Z]{2,4}$"), '.txt');

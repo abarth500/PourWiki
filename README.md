@@ -58,7 +58,12 @@ mod_rewriteの設定例(.htaccess-rootと同等の内容です)
     RewriteRule ^(.+)$ /PourWiki/tmpls/empty_page.html [L,QSA]
 ```
 
-またPourWikiディレクトリにはmod_writedを適用しないので、PourWikiディレクトリでは次の.htaccessファイルを設置してください。(普通にインストールしていれば、この.htaccessはすでPourWikiディレクトリに配置されているはずです)
+この設定はPourWikiディレクトリの.htaccess-rootにも記載されています。ご使用のWebサーバで.htaccess有効なら、これを以下のコマンドで１つ上のディレクトリ(=Webのルートディレクトリ)に移動させれば設定完了です。
+```
+mv .htaccess-root ../.htaccess
+```
+
+PourWikiディレクトリ自体にはmod_writedを適用しないので、PourWikiディレクトリでは次の.htaccessファイルを設置してください。(普通にインストールしていれば、この.htaccessはすでPourWikiディレクトリに配置されているはずです)
 ```
 RewriteEngine Off
 Options -Indexes
