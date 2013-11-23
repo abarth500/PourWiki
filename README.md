@@ -75,16 +75,16 @@ Options -Indexes
 ###パーミッションの設定
 ディレクトリ構造は単純です。WebページのルートにPourWikiディレクトリを作成し、そこに全てのファイルをインストールしていると思いますが、その中のdocsディレクトリがWikiによって管理されるコンテンツのデータが格納されます。その内でlocalというディレクトリが各HTMLページに流し込まれるデータの格納場所です。なのでこのディレクトリをPHP(Webサーバ)から書きかえられるようにします。
 ```
-chown www:www /PourWiki/docs/local
+chown www:www PourWiki/docs/local
 #もしくは
-chmod 777 /PourWiki/docs/local
+chmod 777 PourWiki/docs/local
 
 ```
 
 ###index.htmlの設置
 PourWikiでは全てのページにHTMLファイルを設置する必要はありませんが、１つだけ例外があってWebのルートにだけはindex.html(index.phpでも可)を置く必要があります。もし空のWebサイトにPourWikiをインストールした場合は、templsディレクトリにあるempty-page.htmlをコピーしましょう。
 ```
-cp /PourWiki/tmpls/empty-page.html ./index.html
+cp PourWiki/tmpls/empty_page.html ./index.html
 ```
 
 ###インストールの確認
