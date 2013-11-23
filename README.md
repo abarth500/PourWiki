@@ -40,8 +40,25 @@ INSTALL
 - .htaccessファイルが設置可能である事
 　　　　- あるいはapahceの全体設定が編集可能である事
 
+インストールコマンドまとめ(詳しくは次章以降の説明を読んでください)
+```
+git clone --depth 1 https://github.com/abarth500/PourWiki.git
+mv PourWiki/pourconf.js.def PourWiki/pourconf.js
+mv PourWiki/pourconf.php.def PourWiki/pourconf.php
+mv PourWiki/.htaccess-root ./.htaccess
+chmod 777 PourWiki/docs/local
+cp PourWiki/tmpls/empty_page.html ./index.html
+
+```
+
 ###ダウンロードと設置
-Githubの画面上にある**Download ZIP**ボタンからダウンロードしてください。解凍すると**PourWiki-master**というディレクトリが現れますので、**PourWiki**という名前に変更して、Webページのルートディレクトリに置いてください。
+
+Git導入済みの環境なら、Webサーバのルートディレクトリでcloneしてください。
+```
+git clone --depth 1 https://github.com/abarth500/PourWiki.git
+```
+
+Gitが無い環境ならGithubの画面上にある**Download ZIP**ボタンからダウンロードしてください。解凍すると**PourWiki-master**というディレクトリが現れますので、**PourWiki**という名前に変更して、Webページのルートディレクトリに置いてください。
 
 次に**pourconf.js.def**を**pourconf.js**に、**pourconf.php.def**を**pourconf.php**に名前を変えてください。これで設置は完了です。
 
@@ -60,7 +77,7 @@ mod_rewriteの設定例(.htaccess-rootと同等の内容です)
 
 この設定はPourWikiディレクトリの.htaccess-rootにも記載されています。ご使用のWebサーバで.htaccess有効なら、これを以下のコマンドで１つ上のディレクトリ(=Webのルートディレクトリ)に移動させれば設定完了です。
 ```
-mv .htaccess-root ../.htaccess
+mv PourWiki/.htaccess-root ./.htaccess
 ```
 
 PourWikiディレクトリ自体にはmod_writedを適用しないので、PourWikiディレクトリでは次の.htaccessファイルを設置してください。(普通にインストールしていれば、この.htaccessはすでPourWikiディレクトリに配置されているはずです)
@@ -75,7 +92,7 @@ Options -Indexes
 ###パーミッションの設定
 ディレクトリ構造は単純です。WebページのルートにPourWikiディレクトリを作成し、そこに全てのファイルをインストールしていると思いますが、その中のdocsディレクトリがWikiによって管理されるコンテンツのデータが格納されます。その内でlocalというディレクトリが各HTMLページに流し込まれるデータの格納場所です。なのでこのディレクトリをPHP(Webサーバ)から書きかえられるようにします。
 ```
-chown www:www PourWiki/docs/local
+chown apache:apache PourWiki/docs/local
 #もしくは
 chmod 777 PourWiki/docs/local
 
