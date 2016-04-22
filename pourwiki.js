@@ -135,6 +135,7 @@ Pour.Wiki = function(){
 		var constant = this._("baseDir")+ "docs/constant.json";
 		this.donePage = false;
 		this.doneDir = dirs.length;
+        this.doneParent = 0;
 		this.doneConstant = false;
 		//page
 		if(this._("preview") != false){
