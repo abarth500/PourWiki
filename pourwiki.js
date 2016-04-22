@@ -168,7 +168,7 @@ Pour.Wiki = function(){
 					}
 				}
 				if(typeof json['parent'] != "undefiened" && json["parent"] != ""){
-					var parents = json["parent"].split('/')
+					var parents = json["parent"];
 					this.doneParent = parents.length;
 					$.ajax({
 						type: "GET",
