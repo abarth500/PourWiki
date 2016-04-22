@@ -39,9 +39,9 @@ Pour.Wiki = function(){
 		}
 		$("body").append(this.setting);
 		$(this.setting).on("click",$.proxy(function(event){
+            console.log("click!");
 			if(this._("preview") != false){
 				window.close();
-                event.preventDefault();
 				return false;
 			}else{
 				if (event.shiftKey){
