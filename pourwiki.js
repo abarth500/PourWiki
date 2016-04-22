@@ -136,6 +136,7 @@ Pour.Wiki = function(){
 		this.donePage = false;
 		this.doneDir = dirs.length;
         this.doneParent = 0;
+        this.parent = [];
 		this.doneConstant = false;
 		//page
 		if(this._("preview") != false){
@@ -178,6 +179,7 @@ Pour.Wiki = function(){
 							dataType: "json",
 							cache: false,
 							success: $.proxy(function (json) {
+                                this.parent.push(json['title']);
 								this.doneParent--;
 								this.checkDone();
 							}, this),
@@ -305,6 +307,9 @@ Pour.Wiki = function(){
 			}
 			path.pop();
 		};
+        for(var c = 0; c < this.parent.length; c++){
+            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.parent[c]));
+        }
 		//page
 		this.contents = "<h1>" + this.pageTitle + "</h1><p>" + this.contents;
 		var contents = this.contents;
