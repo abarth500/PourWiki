@@ -167,9 +167,8 @@ Pour.Wiki = function(){
 						$("#"+hidden[c]).hide();
 					}
 				}
-				if(typeof json['parent'] != "undefiened" && json["parent"] != ""){
+				if(typeof json['parent'] != "undefined" && json["parent"] != ""){
 					var parents = json["parent"];
-                    console.log("parent:"+parents);
 					this.doneParent = parents.length;
 					for(var c in parents) {
 						$.ajax({
