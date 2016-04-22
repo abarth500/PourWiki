@@ -172,7 +172,7 @@ Pour.Wiki = function(){
 					var parents = json["parent"];
 					this.doneParent = parents.length;
 					for(var c in parents) {
-                        console.log(this._("baseDir") + "docs/local" + parents[c]['page']+".txt");
+                        console.log(this._("baseDir") + "docs/local/" + parents[c]['page']+".txt");
 						$.ajax({
 							type: "GET",
 							url: this._("baseDir") + "docs/local" + parents[c]['page']+".txt",
