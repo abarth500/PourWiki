@@ -41,6 +41,7 @@ Pour.Wiki = function(){
 		$(this.setting).on("click",$.proxy(function(event){
 			if(this._("preview") != false){
 				window.close();
+                event.preventDefault();
 				return false;
 			}else{
 				if (event.shiftKey){
@@ -55,6 +56,7 @@ Pour.Wiki = function(){
 							container.push(target.get(c).attr("class"));
 						}
 					},this));
+                    event.preventDefault();
 					window.location = this._("baseDir")+"progs/edit.php?c="+container.join(",");
 				}
 			}
@@ -179,7 +181,17 @@ Pour.Wiki = function(){
 							dataType: "json",
 							cache: false,
 							success: $.proxy(function (json) {
-                                this.parent.push(json['title']);
+                                var qs = $.url(window.href).param();
+                                var link = [];//;
+                                for(var z in parents[c]['querystring']){
+                                    if(qs.hasOwnProperty(parents[c]['querystring'][z])){
+                                        link.push(parents[c]['querystring'][z]+"="+qs[parents[c]['querystring'][z]]);
+                                    }
+                                }
+                                if(link.length > 0) {
+                                    link = "?"+link.join("&");
+                                }
+                                this.parent.push(json['title'] + link);
 								this.doneParent--;
 								this.checkDone();
 							}, this),
