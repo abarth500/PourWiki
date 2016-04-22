@@ -48,7 +48,6 @@ Pour.Wiki = function(){
 					var container = [];
 					var target = this.getContainer();
 					target.each($.proxy(function(c){
-
 						var t = $(target.get(c));
 						if(typeof t.attr("id") != "undefined" && t.attr("id").indexOf(this._("prefix")+"-") == 0){
 							container.push(t.attr("id"));
@@ -56,7 +55,6 @@ Pour.Wiki = function(){
 							container.push(target.get(c).attr("class"));
 						}
 					},this));
-                    event.preventDefault();
 					window.location = this._("baseDir")+"progs/edit.php?c="+container.join(",");
 				}
 			}
