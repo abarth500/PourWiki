@@ -106,6 +106,20 @@ if(count($error)==0){
 				"hidden"=>isset($_REQUEST["hidden"])?$_REQUEST["hidden"]:array(),
 				"pourables"=>array()
 			);
+			if(isset($_REQUEST['parent']) and $_REQUEST['parent'] != ""){
+				$parent_row = explode('/',$_REQUEST['parent']);
+				$parent = array();
+				foreach($parent_row as $p) {
+					$matches = array();
+					preg_match('/^([\w\.]+)(\[([\w\,]+)\])?$/', $p, $matches);
+					array_push($parent,array(
+						"page"=>$matches[1],
+						"querystring"=>explode(',',$matches[3])
+					));
+				}
+				$save['parent'] = $parent;
+
+			}
 			foreach($_REQUEST as $key => $val){
 				if(stripos($key,$conf["prefix"]."-p-") === 0){
 					list($p,$P,$pourable) = explode("-",$key,3);
@@ -136,6 +150,17 @@ if(count($error)==0){
 	$vPage = $src["pourables"];
 	$vHidden = $src["hidden"];
 	$vDir = $srcDir["pourables"];
+	$vParent = array();
+	if(isset($src['parent'])){
+		foreach(explode('/',$src['parent']) as $p){
+			$vP = $p['page'];
+			if(isset($p['querystring'])){
+				$vP .= '['.implode(',',$p['querystring']).']';
+			}
+			array_push($vParent,$vP);
+		}
+	}
+	$vParent = implode(',',$vParent);
 	$vGStatic = array();
 	$vGDynamic = array();
 	if ($handle = opendir('../docs/global')) {
@@ -187,7 +212,7 @@ if(count($error)>0){
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail3" class="col-sm-2 control-label">Page Contents</label>
+			<label for="contents" class="col-sm-2 control-label">Page Contents</label>
 			<div class="col-sm-10">
 				<textarea name="contents" rows="20" class="form-control"><?php echo $vContents; ?></textarea>
 			</div>
@@ -222,12 +247,19 @@ if(count($containers["page"] )>0){
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail3" class="col-sm-2 control-label">Directory Title</label>
+			<label for="dirTitle" class="col-sm-2 control-label">Directory Title</label>
 			<div class="col-sm-10">
 				<input type="text" name="dirTitle" value="<?php echo $vDirTitle; ?>" class="form-control" placeholder="Directory Title">
 			</div>
 		</div>
-		
+
+		<div class="form-group">
+			<label for="parent" class="col-sm-2 control-label">Addition Parent (if exists)</label>
+			<div class="col-sm-10">
+				<input type="text" name="parent" value="<?php echo $vParent; ?>" class="form-control" placeholder="filename.php[qs-key1,qs-key2]">
+			</div>
+		</div>
+
 		<div class="form-group">
 			<label for="inputEmail3" class="col-sm-2 control-label">Directory Pourables</label>
 			<div class="col-sm-10">
@@ -250,7 +282,7 @@ if(count($containers["page"] )>0){
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-default" name="btnPour" id="btnPour" >Pour</button>
+				<button type="submit" class="btn btn-primary" name="btnPour" id="btnPour" >Pour</button>
 				<button type="submit" class="btn btn-default" name="btnPreview" id="btnPreview">Preview</button>
 			</div>
 		</div>
