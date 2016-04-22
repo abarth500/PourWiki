@@ -176,7 +176,7 @@ Pour.Wiki = function(){
 						dataType: "json",
 						cache:false,
 						success:$.proxy(function(json){
-							console("PARENT:"+json['title']);
+							console.log("PARENT:"+json['title']);
 							this.checkDone();
 						},this),
 						error:$.proxy(function(reuqest,textStatus, errorThrown){
