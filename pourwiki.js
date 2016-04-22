@@ -191,7 +191,7 @@ Pour.Wiki = function(){
                                 if(link.length > 0) {
                                     link = "?"+link.join("&");
                                 }
-                                this.parent.push(json['title'] + link);
+                                this.parent.push({"title":json['title'],"href":parents[c]['page'] + link});
 								this.doneParent--;
 								this.checkDone();
 							}, this),
@@ -320,7 +320,7 @@ Pour.Wiki = function(){
 			path.pop();
 		};
         for(var c = 0; c < this.parent.length; c++){
-            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.parent[c]));
+            $(".breadcrumb").append($("<li/>").attr("class","active").html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
         }
 		//page
 		this.contents = "<h1>" + this.pageTitle + "</h1><p>" + this.contents;
