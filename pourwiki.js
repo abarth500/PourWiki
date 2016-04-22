@@ -170,25 +170,29 @@ Pour.Wiki = function(){
 				if(typeof json['parent'] != "undefiened" && json["parent"] != ""){
 					var parents = json["parent"];
 					this.doneParent = parents.length;
-					$.ajax({
-						type: "GET",
-						url: page,
-						dataType: "json",
-						cache:false,
-						success:$.proxy(function(json){
-							console.log("PARENT:"+json['title']);
-							this.checkDone();
-						},this),
-						error:$.proxy(function(reuqest,textStatus, errorThrown){
-							this.donePage = true;
-							this.contents = "There is currently no text in this page. You can edit this page.";
-							console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the page file");
-							if(this._("preview") != false){
-								alert(":::PourWiki Critical ERROR!:::\n\nDatasource file for the preview has been deleted. Please close this window and click the preview button on the edit page again.");
-							}
-							this.checkDone();
-						},this)
-					});
+					for(var c in parents) {
+						$.ajax({
+							type: "GET",
+							url: parents[c]['page'],
+							dataType: "json",
+							cache: false,
+							success: $.proxy(function (json) {
+								console.log("PARENT:" + json['title']);
+								this.doneParent--;
+								this.checkDone();
+							}, this),
+							error: $.proxy(function (reuqest, textStatus, errorThrown) {
+								this.donePage = true;
+								this.contents = "There is currently no text in this page. You can edit this page.";
+								console.error("PourError(" + JSON.stringify(textStatus) + "): cannot find the page file");
+								if (this._("preview") != false) {
+									alert(":::PourWiki Critical ERROR!:::\n\nDatasource file for the preview has been deleted. Please close this window and click the preview button on the edit page again.");
+								}
+								this.doneParent--;
+								this.checkDone();
+							}, this)
+						});
+					}
 				}
 				this.donePage = true;
 				this.checkDone();
