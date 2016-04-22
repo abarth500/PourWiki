@@ -44,7 +44,7 @@ Pour.Wiki = function(){
             $('#pourSettingIcon').append(this.setting);
         }
 		$(this.setting).on("click",$.proxy(function(event){
-            console.log("click!");
+            event.preventDefault();
 			if(this._("preview") != false){
 				window.close();
 				return false;
