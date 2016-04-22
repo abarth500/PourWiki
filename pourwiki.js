@@ -14,18 +14,18 @@ Pour.Wiki = function(){
 		this.done = arguments[0];
 	}
 	this.init = function(){
-		this.setting = $("<span/>")
-			.attr("id",this._("prefix")+"xXxSetting")
-			.css("position","absolute")
-			.css("cursor","pointer")
-			.css("padding","8px")
-			.css("color",this._("iconColor"));
-		if(this._("preview") != false){
-			this.setting.attr("class","glyphicon glyphicon-remove");
-		}else{
-			this.setting.attr("class","glyphicon glyphicon-screenshot");
-		}
         if($('#pourSettingIcon').size()==0) {
+            this.setting = $("<span/>")
+                .attr("id",this._("prefix")+"xXxSetting")
+                .css("position","absolute")
+                .css("cursor","pointer")
+                .css("padding","8px")
+                .css("color",this._("iconColor"));
+            if(this._("preview") != false){
+                this.setting.attr("class","glyphicon glyphicon-remove");
+            }else{
+                this.setting.attr("class","glyphicon glyphicon-pencil");
+            }
             console.log("Setting Icon Container Not Found",$('#pourSettingIcon'));
             var top = (this._("iconLocation").indexOf("top") == 0) ? "0px" : "100%";
             var left = (this._("iconLocation").indexOf("left") + 4 == this._("iconLocation").length) ? "0px" : "100%";
@@ -41,6 +41,14 @@ Pour.Wiki = function(){
             }
             $("body").append(this.setting);
         }else{
+            this.setting = $("<span/>")
+                .attr("id",this._("prefix")+"xXxSetting")
+                .css("color",this._("iconColor"));
+            if(this._("preview") != false){
+                this.setting.attr("class","glyphicon glyphicon-remove");
+            }else{
+                this.setting.attr("class","glyphicon glyphicon-pencil");
+            }
             $('#pourSettingIcon').append(this.setting);
         }
 		$(this.setting).on("click",$.proxy(function(event){
