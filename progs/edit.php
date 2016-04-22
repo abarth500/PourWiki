@@ -115,7 +115,7 @@ if(count($error)==0){
 					if(isset($matches[1])) {
 						$in = array("page" => $matches[1]);
 						if(isset($matches[3])){
-							$in['querystring'] = explode(',', $matches[3])
+							$in['querystring'] = explode(',', $matches[3]);
 						}
 						array_push($parent,$in);
 					}
@@ -124,7 +124,7 @@ if(count($error)==0){
 						break;
 					}
 				}
-				if(count($error)=0) {
+				if(count($error)==0) {
 					$save['parent'] = $parent;
 				}
 
