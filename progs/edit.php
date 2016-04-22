@@ -152,7 +152,7 @@ if(count($error)==0){
 	$vDir = $srcDir["pourables"];
 	$vParent = array();
 	if(isset($src['parent'])){
-		foreach(explode('/',$src['parent']) as $p){
+		foreach($src['parent'] as $p){
 			$vP = $p['page'];
 			if(isset($p['querystring'])){
 				$vP .= '['.implode(',',$p['querystring']).']';
