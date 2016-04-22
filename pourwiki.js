@@ -26,6 +26,7 @@ Pour.Wiki = function(){
 			this.setting.attr("class","glyphicon glyphicon-screenshot");
 		}
         if($('#pourSettingIcon').size()==0) {
+            console.log("Setting Icon Container Not Found",$('#pourSettingIcon'));
             var top = (this._("iconLocation").indexOf("top") == 0) ? "0px" : "100%";
             var left = (this._("iconLocation").indexOf("left") + 4 == this._("iconLocation").length) ? "0px" : "100%";
             if (this._("iconLocation").indexOf("right") + 5 == this._("iconLocation").length) {
