@@ -25,19 +25,23 @@ Pour.Wiki = function(){
 		}else{
 			this.setting.attr("class","glyphicon glyphicon-screenshot");
 		}
-		var top = (this._("iconLocation").indexOf("top")==0)?"0px":"100%";
-		var left = (this._("iconLocation").indexOf("left")+4==this._("iconLocation").length)?"0px":"100%";
-		if(this._("iconLocation").indexOf("right")+5==this._("iconLocation").length){
-			this.setting.css("top",top)
-				.css("left",left)
-				.css("margin-left","-30px");
-		}
-		if(this._("iconLocation").indexOf("bottom")==0){
-			this.setting.css("top",top)
-				.css("left",left)
-				.css("margin-top","-30px");
-		}
-		$("body").append(this.setting);
+        if($('#pourSettingIcon').size()==0) {
+            var top = (this._("iconLocation").indexOf("top") == 0) ? "0px" : "100%";
+            var left = (this._("iconLocation").indexOf("left") + 4 == this._("iconLocation").length) ? "0px" : "100%";
+            if (this._("iconLocation").indexOf("right") + 5 == this._("iconLocation").length) {
+                this.setting.css("top", top)
+                    .css("left", left)
+                    .css("margin-left", "-30px");
+            }
+            if (this._("iconLocation").indexOf("bottom") == 0) {
+                this.setting.css("top", top)
+                    .css("left", left)
+                    .css("margin-top", "-30px");
+            }
+            $("body").append(this.setting);
+        }else{
+            $('#pourSettingIcon').append(this.setting);
+        }
 		$(this.setting).on("click",$.proxy(function(event){
             console.log("click!");
 			if(this._("preview") != false){
