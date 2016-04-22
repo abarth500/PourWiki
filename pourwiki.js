@@ -167,6 +167,29 @@ Pour.Wiki = function(){
 						$("#"+hidden[c]).hide();
 					}
 				}
+				if(typeof json['parent'] != "undefiened" && json["parent"] != ""){
+					var parents = json["parent"].split('/')
+					this.doneParent = parents.length;
+					$.ajax({
+						type: "GET",
+						url: page,
+						dataType: "json",
+						cache:false,
+						success:$.proxy(function(json){
+							console("PARENT:"+json['title']);
+							this.checkDone();
+						},this),
+						error:$.proxy(function(reuqest,textStatus, errorThrown){
+							this.donePage = true;
+							this.contents = "There is currently no text in this page. You can edit this page.";
+							console.error("PourError("+JSON.stringify(textStatus)+"): cannot find the page file");
+							if(this._("preview") != false){
+								alert(":::PourWiki Critical ERROR!:::\n\nDatasource file for the preview has been deleted. Please close this window and click the preview button on the edit page again.");
+							}
+							this.checkDone();
+						},this)
+					});
+				}
 				this.donePage = true;
 				this.checkDone();
 			},this,pagePourable),
@@ -356,6 +379,7 @@ Pour.Wiki = function(){
 	this.checkDone = function(){
 		if(this.donePage 
 			&& this.doneDir == 0
+			&& this.doneParent == 0
 		    && this.doneConstant
 			&& this.globalStaticPourable.length == this.doneGStatic 
 			&& this.globalDynamicPourable.length == this.doneGDynamic)
