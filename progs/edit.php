@@ -111,13 +111,22 @@ if(count($error)==0){
 				$parent = array();
 				foreach($parent_row as $p) {
 					$matches = array();
-					preg_match('/^([\w\.]+)(\[([\w\,]+)\])?$/', $p, $matches);
-					array_push($parent,array(
-						"page"=>$matches[1],
-						"querystring"=>explode(',',$matches[3])
-					));
+					$result = preg_match('/^([\w]+)(\[([\w\,]+)\])?$/', $p, $matches);
+					if(isset($matches[1])) {
+						$in = array("page" => $matches[1]);
+						if(isset($matches[3])){
+							$in['querystring'] = explode(',', $matches[3])
+						}
+						array_push($parent,$in);
+					}
+					if(!$result){
+						array_push($error,'The format of additional parent is wrong! Please see the document!');
+						break;
+					}
 				}
-				$save['parent'] = $parent;
+				if(count($error)=0) {
+					$save['parent'] = $parent;
+				}
 
 			}
 			foreach($_REQUEST as $key => $val){
