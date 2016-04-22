@@ -111,7 +111,7 @@ if(count($error)==0){
 				$parent = array();
 				foreach($parent_row as $p) {
 					$matches = array();
-					$result = preg_match('/^([\w]+)(\[([\w\,]+)\])?$/', $p, $matches);
+					$result = preg_match('/^([\w\.]+)(\[([\w\,]+)\])?$/', $p, $matches);
 					if(isset($matches[1])) {
 						$in = array("page" => $matches[1]);
 						if(isset($matches[3])){
