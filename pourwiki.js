@@ -168,6 +168,7 @@ Pour.Wiki = function(){
 						$("#"+hidden[c]).hide();
 					}
 				}
+                console.log(this._("baseDir") + "docs/local" + parents[c]['page']+".txt");
 				if(typeof json['parent'] != "undefined" && json["parent"] != ""){
 					var parents = json["parent"];
 					this.doneParent = parents.length;
