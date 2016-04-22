@@ -174,7 +174,7 @@ Pour.Wiki = function(){
 					for(var c in parents) {
 						$.ajax({
 							type: "GET",
-							url: parents[c]['page']+".txt",
+							url: this._("baseDir") + "docs/local" + parents[c]['page']+".txt",
 							dataType: "json",
 							cache: false,
 							success: $.proxy(function (json) {
