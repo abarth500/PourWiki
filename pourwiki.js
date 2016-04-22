@@ -317,23 +317,21 @@ Pour.Wiki = function(){
 	this.rendering = function(){
 		//breadcrumb
 		var depth = Object.keys(this.directories).length;
-		var path = ["."];
+		var path = [];
 		for(var c = 0; c < depth-1; c++){
 			path.push("..")
 		}
 		for(var c = 0; c < depth; c++){
-			if(c == depth - 1 && this.indexPage){
-				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
-			}else{
-				$(".breadcrumb").append($("<li/>").html('<a href="'+path.join("/")+'/">'+this.directories[c]["title"]+'</a>'));
-				if(c == depth - 1){
-					$(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
-				}
-			}
+            $(".breadcrumb").append($("<li/>").html('<a href="'+path.join("/")+'/">'+this.directories[c]["title"]+'</a>'));
 			path.pop();
 		};
         for(var c = 0; c < this.parent.length; c++){
             $(".breadcrumb").append($("<li/>").attr("class","active").html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
+        }
+        if(this.indexPage){
+            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
+        }else{
+            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
         }
 		//page
 		this.contents = "<h1>" + this.pageTitle + "</h1><p>" + this.contents;
