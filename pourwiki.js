@@ -337,18 +337,18 @@ Pour.Wiki = function(){
 		}else{
 			for(var c = 0; c < depth; c++){
 				var a =$("<li/>").appendTo($(".breadcrumb"));
-				a.html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>'));
+				a.html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>');
 				path.pop();
 			}
 			for(var c = 0; c < this.parent.length; c++){
 				var a =$("<li/>").appendTo($(".breadcrumb"));
-				a.html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
+				a.html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>");
 			}
 			var a =$("<li/>").appendTo($(".breadcrumb"));
 			if(this.indexPage){
-				a.attr("class","active").html(this.directories[c]["title"]));
+				a.attr("class","active").html(this.directories[c]["title"]);
 			}else{
-				a.attr("class","active").html(this.pageTitle));
+				a.attr("class","active").html(this.pageTitle);
 			}
 		}
 
