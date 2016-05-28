@@ -336,16 +336,19 @@ Pour.Wiki = function(){
 			}
 		}else{
 			for(var c = 0; c < depth; c++){
-				$(".breadcrumb").append($("<li/>").html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>'));
+				var a =$("<li/>").appendTo($(".breadcrumb"));
+				a.html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>'));
 				path.pop();
 			}
 			for(var c = 0; c < this.parent.length; c++){
-				$(".breadcrumb").append($("<li/>").html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
+				var a =$("<li/>").appendTo($(".breadcrumb"));
+				a.html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
 			}
+			var a =$("<li/>").appendTo($(".breadcrumb"));
 			if(this.indexPage){
-				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
+				a.attr("class","active").html(this.directories[c]["title"]));
 			}else{
-				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
+				a.attr("class","active").html(this.pageTitle));
 			}
 		}
 
