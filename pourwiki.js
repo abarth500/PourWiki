@@ -321,18 +321,34 @@ Pour.Wiki = function(){
 		for(var c = 0; c < depth-1; c++){
 			path.push("..")
 		}
-		for(var c = 0; c < depth; c++){
-            $(".breadcrumb").append($("<li/>").html('<a href="'+path.join("/")+'/">'+this.directories[c]["title"]+'</a>'));
-			path.pop();
-		};
-        for(var c = 0; c < this.parent.length; c++){
-            $(".breadcrumb").append($("<li/>").attr("class","active").html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
-        }
-        if(this.indexPage){
-            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
-        }else{
-            $(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
-        }
+		if(this.indexPage) {
+			if(this.parent.length>0){
+				console.error("Index Page does not have a parent page chain.");
+			}
+			for(var c = 0; c < depth; c++){
+				var a =$("<li/>").appendTo($(".breadcrumb"));
+				if(c == depth-1){
+					a.html(this.directories[c]["title"]).attr("class","active");
+				}else{
+					a.html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>');
+				}
+				path.pop();
+			}
+		}else{
+			for(var c = 0; c < depth; c++){
+				$(".breadcrumb").append($("<li/>").html('<a href="./'+path.join("/")+(path.length==0?"":"/")+'">'+this.directories[c]["title"]+'</a>'));
+				path.pop();
+			}
+			for(var c = 0; c < this.parent.length; c++){
+				$(".breadcrumb").append($("<li/>").html('<a href="'+this.parent[c]["href"]+'">'+this.parent[c]["title"]+"</a>"));
+			}
+			if(this.indexPage){
+				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.directories[c]["title"]));
+			}else{
+				$(".breadcrumb").append($("<li/>").attr("class","active").html(this.pageTitle));
+			}
+		}
+
 		//page
 		this.contents = "<h1>" + this.pageTitle + "</h1><p>" + this.contents;
 		var contents = this.contents;
